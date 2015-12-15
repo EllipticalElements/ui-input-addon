@@ -1,8 +1,8 @@
 {
   "name": "ui-input-addon",
   "description": "input action web component",
-  "version":"1.0.0",
-  "main": "",
+  "version":"1.0.1",
+  "main": "ui-input-addon.html",
   "authors": [
     "S. Francis"
   ],
