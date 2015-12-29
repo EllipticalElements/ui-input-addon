@@ -4,7 +4,7 @@
 
 <dom-module id="ui-input-addon">
     <template>
-        <input type="text" placeholder="[[placeholder]]" name="[[name]]" id="[[data-id]]" data-bind="[[bind]]">
+        <input type="text" placeholder="[[placeholder]]" name="[[name]]" id="[[data-id]]" data-bind="[[bind]]" value="[[value]]">
         <ui-button class="ui-button [[button-class]]"><span class="[[icon-class]]">[[button-value]]</span></ui-button>
     </template>
 </dom-module>
@@ -45,12 +45,18 @@
             buttonValue:{
                 type:String,
                 value:''
+            },
+            value:{
+                type:String,
+                value:null
             }
 
         },
 
         ready:function(){
             this._setValueProp();
+            this._setIconClass();
+            this._setButtonClass();
         },
 
         _setValueProp:function(){
@@ -62,6 +68,20 @@
                 enumerable: true,
                 configurable: true
             });
+        },
+
+        _setIconClass:function(){
+            if(this.iconClass !==''){
+                var span=this.querySelector('span');
+                span.classList.add(this.iconClass);
+            }
+        },
+
+        _setButtonClass:function(){
+            if(this.buttonClass !==''){
+                var button=this.querySelector('ui-button');
+                button.classList.add(this.buttonClass);
+            }
         }
 
     });
