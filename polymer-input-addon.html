@@ -4,8 +4,8 @@
 
 <dom-module id="ui-input-addon">
     <template>
-        <input type="text" placeholder="[[placeholder]]" name="[[name]]" id="[[data-id]]" data-bind="[[bind]]" value="[[value]]">
-        <ui-button class="ui-button [[button-class]]"><span class="[[icon-class]]">[[button-value]]</span></ui-button>
+        <input type="text" placeholder="[[placeholder]]">
+        <ui-button class="ui-button"><span></span></ui-button>
     </template>
 </dom-module>
 
@@ -22,15 +22,11 @@
                 type:String,
                 value:''
             },
-            name:{
+            dataName:{
                 type:String,
-                value:''
+                value:null
             },
             dataId:{
-                type:String,
-                value:''
-            },
-            bind:{
                 type:String,
                 value:null
             },
@@ -40,13 +36,13 @@
             },
             iconClass:{
                 type:String,
-                value:''
+                value:null
             },
-            buttonValue:{
+            buttonLabel:{
                 type:String,
-                value:''
+                value:null
             },
-            value:{
+            dataValue:{
                 type:String,
                 value:null
             }
@@ -57,6 +53,10 @@
             this._setValueProp();
             this._setIconClass();
             this._setButtonClass();
+            this._setId();
+            this._setName();
+            this._setButtonLabel();
+            this._setValue();
         },
 
         _setValueProp:function(){
@@ -71,16 +71,43 @@
         },
 
         _setIconClass:function(){
-            if(this.iconClass !==''){
+            if(this.iconClass){
                 var span=this.querySelector('span');
                 span.classList.add(this.iconClass);
             }
         },
 
         _setButtonClass:function(){
-            if(this.buttonClass !==''){
+            if(this.buttonClass){
                 var button=this.querySelector('ui-button');
                 button.classList.add(this.buttonClass);
+            }
+        },
+
+        _setId:function(){
+            if(this.dataId){
+                var input=this.element.find('input');
+                input.attr('id',this.dataId);
+            }
+        },
+
+        _setName:function(){
+            if(this.dataName){
+                var input=this.element.find('input');
+                input.attr('name',this.dataName);
+            }
+        },
+
+        _setButtonLabel:function(){
+            if(this.buttonLabel){
+                var span=this.element.find('span');
+                span.text(this.buttonLabel);
+            }
+        },
+
+        _setValue:function(){
+            if(this.dataValue){
+                this.value=this.dataValue;
             }
         }
 
