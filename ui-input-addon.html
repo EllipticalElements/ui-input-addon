@@ -45,6 +45,10 @@
             dataValue:{
                 type:String,
                 value:null
+            },
+            handleEvent:{
+                type:Boolean,
+                value:false
             }
 
         },
@@ -56,7 +60,9 @@
             this._setId();
             this._setName();
             this._setButtonLabel();
+            this._setRole();
             this._setValue();
+            if(this.handleEvent) this._buttonEvent();
         },
 
         _setValueProp:function(){
@@ -91,6 +97,14 @@
             }
         },
 
+        _setRole:function(){
+            var role=this.getAttribute('role');
+            if(role){
+                var input=this.element.find('input');
+                input.attr('role',role);
+            }
+        },
+
         _setName:function(){
             if(this.dataName){
                 var input=this.element.find('input');
@@ -109,6 +123,15 @@
             if(this.dataValue){
                 this.value=this.dataValue;
             }
+        },
+
+        _buttonEvent:function(){
+            this._event(this.element,this._data.click,'.ui-button',this._onButtonClick.bind(this));
+        },
+
+        _onButtonClick:function(event){
+            var value=this.value;
+            this.element.trigger('ui.input.addon.press',{value:value});
         }
 
     });
