@@ -1,12 +1,17 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../elliptical-polymer-behaviors/component-behavior.html">
-
+<link rel="import" href="../iron-icons/iron-icons.html">
 
 <dom-module id="ui-input-addon">
     <template>
         <input type="text" placeholder="[[placeholder]]">
-        <div class="ui-button"><span></span></div>
+        <div class="ui-button"><iron-icon icon="[[icon]]"></iron-icon></div>
     </template>
+    <style>
+        :host .ui-button{
+            padding:var(--input-icon-addon-button-padding, 0.5em 1em 0.7em 1em);
+         }
+     </style>
 </dom-module>
 
 <script>
@@ -34,13 +39,13 @@
                 type:String,
                 value:null
             },
-            iconClass:{
+            icon:{
                 type:String,
                 value:null
             },
             buttonLabel:{
                 type:String,
-                value:null
+                value:'search'
             },
             dataValue:{
                 type:String,
@@ -55,7 +60,6 @@
 
         ready:function(){
             this._setValueProp();
-            this._setIconClass();
             this._setButtonClass();
             this._setId();
             this._setName();
@@ -74,13 +78,6 @@
                 enumerable: true,
                 configurable: true
             });
-        },
-
-        _setIconClass:function(){
-            if(this.iconClass){
-                var span=this.querySelector('span');
-                span.classList.add(this.iconClass);
-            }
         },
 
         _setButtonClass:function(){
@@ -131,7 +128,7 @@
 
         _onButtonClick:function(event){
             var value=this.value;
-            this.element.trigger('ui.input.addon.press',{value:value});
+            this.fire('ui-input-addon-press',{value:value});
         }
 
     });
