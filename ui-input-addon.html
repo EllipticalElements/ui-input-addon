@@ -3,134 +3,164 @@
 <link rel="import" href="../iron-icons/iron-icons.html">
 
 <dom-module id="ui-input-addon">
-    <template>
-        <input type="text" placeholder="[[placeholder]]">
-        <div class="ui-button"><iron-icon icon="[[icon]]"></iron-icon></div>
-    </template>
-    <style>
-        :host .ui-button{
-            padding:var(--input-icon-addon-button-padding, 0.5em 1em 0.7em 1em);
-         }
-     </style>
+  <template>
+    <input type="text" placeholder="[[placeholder]]">
+    <div class="ui-button" id="button"><iron-icon icon="[[icon]]" id="buttonIcon"></iron-icon></div>
+  </template>
+  <style>
+    :host.no-button-style .ui-button{
+      background:none;
+      box-shadow:none;
+      border-left:0;
+    }
+    :host.no-button-style .ui-button:active{
+      background:none;
+      box-shadow:none;
+      border-left:0;
+    }
+  </style>
 </dom-module>
 
 <script>
 
-    Polymer({
+  Polymer({
 
-        is: 'ui-input-addon',
+    is: 'ui-input-addon',
 
-        behaviors:[Elliptical.ComponentBehavior],
+    behaviors:[Elliptical.ComponentBehavior],
 
-        properties: {
-            placeholder:{
-                type:String,
-                value:''
-            },
-            dataName:{
-                type:String,
-                value:null
-            },
-            dataId:{
-                type:String,
-                value:null
-            },
-            buttonClass:{
-                type:String,
-                value:null
-            },
-            icon:{
-                type:String,
-                value:null
-            },
-            buttonLabel:{
-                type:String,
-                value:'search'
-            },
-            dataValue:{
-                type:String,
-                value:null
-            },
-            handleEvent:{
-                type:Boolean,
-                value:false
-            }
+    properties: {
+      placeholder:{
+        type:String,
+        value:''
+      },
+      dataName:{
+        type:String,
+        value:null
+      },
+      dataId:{
+        type:String,
+        value:null
+      },
+      buttonClass:{
+        type:String,
+        value:null
+      },
+      icon:{
+        type:String,
+        value:null
+      },
+      iconColor:{
+        type:String,
+        value:null
+      },
+      buttonLabel:{
+        type:String,
+        value:'search'
+      },
+      dataValue:{
+        type:String,
+        value:null
+      },
+      disableEvent:{
+        type:Boolean,
+        value:false
+      },
+      buttonBorderColor:{
+        type:String,
+        value:null
+      }
 
-        },
 
-        ready:function(){
-            this._setValueProp();
-            this._setButtonClass();
-            this._setId();
-            this._setName();
-            this._setButtonLabel();
-            this._setRole();
-            this._setValue();
-            if(this.handleEvent) this._buttonEvent();
-        },
+    },
 
-        _setValueProp:function(){
-            var element=this.element;
-            var node=this;
-            Object.defineProperty(node, 'value', {
-                get: function() { return element.find('input').val(); },
-                set: function(newValue) { element.find('input').val(newValue); },
-                enumerable: true,
-                configurable: true
-            });
-        },
+    ready:function(){
+      this._setValueProp();
+      this._setButtonClass();
+      this._setButtonBorderColor();
+      this._setIconColor();
+      this._setId();
+      this._setName();
+      this._setRole();
+      this._setValue();
+      if(!this.disableEvent) this._buttonEvent();
+    },
 
-        _setButtonClass:function(){
-            if(this.buttonClass){
-                var button=this.querySelector('ui-button');
-                button.classList.add(this.buttonClass);
-            }
-        },
+    _setValueProp:function(){
+      var element=this.element;
+      var node=this;
+      Object.defineProperty(node, 'value', {
+        get: function() { return element.find('input').val(); },
+        set: function(newValue) { element.find('input').val(newValue); },
+        enumerable: true,
+        configurable: true
+      });
+    },
 
-        _setId:function(){
-            if(this.dataId){
-                var input=this.element.find('input');
-                input.attr('id',this.dataId);
-            }
-        },
+    _setButtonClass:function(){
+      if(this.buttonClass){
+        var button=this.querySelector('ui-button');
+        button.classList.add(this.buttonClass);
+      }
+    },
 
-        _setRole:function(){
-            var role=this.getAttribute('role');
-            if(role){
-                var input=this.element.find('input');
-                input.attr('role',role);
-            }
-        },
+    _setButtonBorderColor:function(){
+      if(this.buttonBorderColor){
+        this.$.button.style.borderColor=this.buttonBorderColor;
+      }
+    },
 
-        _setName:function(){
-            if(this.dataName){
-                var input=this.element.find('input');
-                input.attr('name',this.dataName);
-            }
-        },
+    _setIconColor:function(){
+      if(this.iconColor){
+        this.$.buttonIcon.style.color=this.iconColor;
+      }
+    },
 
-        _setButtonLabel:function(){
-            if(this.buttonLabel){
-                var span=this.element.find('span');
-                span.text(this.buttonLabel);
-            }
-        },
+    _setId:function(){
+      if(this.dataId){
+        var input=this.element.find('input');
+        input.attr('id',this.dataId);
+      }
+    },
 
-        _setValue:function(){
-            if(this.dataValue){
-                this.value=this.dataValue;
-            }
-        },
+    _setRole:function(){
+      var role=this.getAttribute('role');
+      if(role){
+        var input=this.element.find('input');
+        input.attr('role',role);
+      }
+    },
 
-        _buttonEvent:function(){
-            this._event(this.element,this._data.click,'.ui-button',this._onButtonClick.bind(this));
-        },
+    _setName:function(){
+      if(this.dataName){
+        var input=this.element.find('input');
+        input.attr('name',this.dataName);
+      }
+    },
 
-        _onButtonClick:function(event){
-            var value=this.value;
-            this.fire('ui-input-addon-press',{value:value});
-        }
+    _setValue:function(){
+      if(this.dataValue){
+        this.value=this.dataValue;
+      }
+    },
 
-    });
+    _buttonEvent:function(){
+      this._event(this.element,this._data.click,'.ui-button',this._onButtonClick.bind(this));
+      this._event(this.element,'keypress','input',this._onKeyPress.bind(this));
+    },
+
+    _onButtonClick:function(event){
+      var value=this.value;
+      this.fire('ui-input-addon-press',{value:value});
+    },
+
+    _onKeyPress:function(event){
+      var value=this.value;
+      if(event.which===13 && value && value !==''){
+        this.fire('ui-input-addon-press',{value:value});
+      }
+    }
+
+  });
 
 </script>
